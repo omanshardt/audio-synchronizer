@@ -1,0 +1,9 @@
+# Wir nutzen ein schlankes Linux-Image mit FFmpeg (oft auf Alpine oder Debian Slim basierend)
+# Hier verwenden wir das offizielle FFmpeg-Image als Basis.
+FROM ffmpeg/ffmpeg:latest
+
+# Setze das Arbeitsverzeichnis im Container
+WORKDIR /app
+
+# Das ist alles. FFmpeg ist bereits enthalten.
+# Wir müssen keine zusätzlichen Binärdateien kopieren, da das Steuerskript vom Host gemountet wird.
