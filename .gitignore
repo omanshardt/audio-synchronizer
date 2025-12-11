@@ -1,6 +1,10 @@
 /Video
 /ExtractedAudio/
 /Audio
-/Audio Kopie
+/ExtractedAudio Kopie
 /Output
-/Synced
+/SyncedAudio
+/TEST
+/*.fcpbundle
+/.DS_Store
+/Output replace

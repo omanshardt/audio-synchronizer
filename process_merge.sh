@@ -8,7 +8,7 @@ FFMPEG_IMAGE_NAME="sync-ffmpeg"
 BIN_DIR_HOST="$(pwd)/bin"
 VIDEO_DIR_HOST="$(pwd)/Video"
 AUDIO_DIR_HOST="$(pwd)/Audio"
-SYNCED_DIR_HOST="$(pwd)/Synced"
+SYNCED_DIR_HOST="$(pwd)/SyncedAudio"
 OUTPUT_DIR_HOST="$(pwd)/Output"
 # --- ENDE KONFIGURATION ---
 
@@ -37,7 +37,7 @@ docker run --rm \
     --platform linux/amd64 \
     -v "$VIDEO_DIR_HOST":/host_video:ro \
     -v "$AUDIO_DIR_HOST":/host_audio:rw \
-    -v "$SYNCED_DIR_HOST":/host_synced:ro \
+    -v "$SYNCED_DIR_HOST":/host_synced_audio:ro \
     -v "$OUTPUT_DIR_HOST":/host_output:rw \
     -v "$BIN_DIR_HOST":/host_bin:ro \
     --entrypoint /bin/bash \

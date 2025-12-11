@@ -12,7 +12,7 @@
 #   /host_output: Zielverzeichnis.
 
 VIDEO_DIR="/host_video"
-SYNCED_DIR="/host_synced"
+SYNCED_DIR="/host_synced_audio"
 OUTPUT_DIR="/host_output"
 
 MODE="replace"
@@ -31,7 +31,7 @@ done
 echo "Starte Audio-Merge-Prozess..."
 echo "Modus: $MODE"
 
-shopt -s nullglob
+shopt -s nullglob nocaseglob
 
 for VIDEO_PATH in "$VIDEO_DIR"/*.mp4; do
     if [ -f "$VIDEO_PATH" ]; then
@@ -69,6 +69,9 @@ for VIDEO_PATH in "$VIDEO_DIR"/*.mp4; do
         
         if [ $? -eq 0 ]; then
             echo "<< Merge erfolgreich."
+            # Zeitstempel vom Originalvideo auf das neue Video übertragen
+            touch -r "$VIDEO_PATH" "$OUTPUT_PATH"
+            echo "   Zeitstempel übertragen."
         else
             echo "<< FEHLER beim Merge."
         fi
