@@ -1,40 +1,56 @@
 #!/bin/bash
 # 
-# Skript zur Audioextraktion aus einer Videodatei
+# Skript zur Audioextraktion aus allen Videodateien im gemappten Verzeichnis.
 # Wird im FFmpeg Docker Container ausgeführt.
 #
-# Usage: ./01_extract_audio.sh /path/to/Video.mp4 /path/to/Output_Audio.wav
+# Annahme: Das Verzeichnis /host_video ist gemountet und enthält die Videos.
+# Annahme: Das Verzeichnis /host_audio ist gemountet und enthält die extrahierten Audios.
 
-VIDEO_PATH="$1"
-OUTPUT_PATH="$2"
+VIDEO_DIR="/host_video"
+AUDIO_DIR="/host_audio"
 
-if [ -z "$VIDEO_PATH" ] || [ -z "$OUTPUT_PATH" ]; then
-    echo "Fehler: Beide Pfade (Video-Input und Audio-Output) müssen angegeben werden."
-    exit 1
-fi
+echo "Starte Batch-Extraktion aus: $VIDEO_DIR"
 
-echo "Starte Extraktion von: $VIDEO_PATH"
-echo "Speichere unter: $OUTPUT_PATH"
+# Sucht nach allen .mp4-Dateien im VIDEO_DIR
+# Die Bash-Wildcard-Expansion funktioniert zuverlässig im Linux-Container.
+# Wir setzen die Option 'nullglob', damit die Schleife nicht einmal mit "*.mp4" läuft, wenn keine Dateien gefunden werden.
+shopt -s nullglob
 
-# FFmpeg Befehl:
-# -i: Input-Datei
-# -vn: Deaktiviere Video-Recording
-# -acodec pcm_s16le: Verwende unkomprimiertes, lineares PCM Audio (am besten für Synchronisation)
-# -ar 44100: Setze die Sample Rate auf 44.1 kHz
-# -ac 1: Wandle in Mono um (optional, aber vereinfacht die spätere Korrelation)
-ffmpeg -i "$VIDEO_PATH" \
-       -vn \
-       -acodec pcm_s16le \
-       -ar 44100 \
-       -ac 1 \
-       "$OUTPUT_PATH"
+# **WICHTIG:** Sicherstellen, dass die Dateinamen Leerzeichen enthalten können.
+for VIDEO_PATH in "$VIDEO_DIR"/*.MP4; do
+    echo "++++ $VIDEO_PATH"
+    # Prüfen, ob eine Datei gefunden wurde (wird durch 'nullglob' sicherer)
+    if [ -f "$VIDEO_PATH" ]; then
+        
+        # 1. Dateinamen extrahieren
+        BASENAME=$(basename "$VIDEO_PATH")
+        FILENAME_NO_EXT="${BASENAME%.*}"
+        
+        OUTPUT_PATH="$AUDIO_DIR/$FILENAME_NO_EXT.wav"
 
-EXIT_CODE=$?
+        echo "--------------------------------------------------------"
+        echo ">> Bearbeite Video: $BASENAME"
+        echo "   Speichere unter: $OUTPUT_PATH"
+        
+        # 2. FFmpeg Befehl ausführen
+        ffmpeg -i "$VIDEO_PATH" \
+               -vn \
+               -acodec pcm_s16le \
+               -ar 44100 \
+               -ac 1 \
+               "$OUTPUT_PATH"
 
-if [ $EXIT_CODE -eq 0 ]; then
-    echo "Extraktion erfolgreich."
-else
-    echo "Fehler bei der Extraktion (FFmpeg Exit Code $EXIT_CODE)."
-fi
+        EXIT_CODE=$?
 
-exit $EXIT_CODE
+        if [ $EXIT_CODE -eq 0 ]; then
+            echo "<< Extraktion erfolgreich."
+        else
+            echo "<< FEHLER bei der Extraktion (FFmpeg Exit Code $EXIT_CODE)."
+        fi
+    fi
+done
+
+echo "--------------------------------------------------------"
+echo "--- Batch-Verarbeitung abgeschlossen. ---"
+
+exit 0

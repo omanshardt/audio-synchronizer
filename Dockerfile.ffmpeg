@@ -1,6 +1,6 @@
 # Wir nutzen ein schlankes Linux-Image mit FFmpeg (oft auf Alpine oder Debian Slim basierend)
 # Hier verwenden wir das offizielle FFmpeg-Image als Basis.
-FROM ffmpeg/ffmpeg:latest
+FROM jrottenberg/ffmpeg:latest
 
 # Setze das Arbeitsverzeichnis im Container
 WORKDIR /app
