@@ -7,11 +7,11 @@
 FFMPEG_IMAGE_NAME="sync-ffmpeg"
 BIN_DIR_HOST="$(pwd)/bin"
 VIDEO_DIR_HOST="$(pwd)/Video"
-AUDIO_DIR_HOST="$(pwd)/Audio"
+EXTRACTED_AUDIO_DIR_HOST="$(pwd)/ExtractedAudio"
 # --- ENDE KONFIGURATION ---
 
 # Ensure directories exist
-mkdir -p "$VIDEO_DIR_HOST" "$AUDIO_DIR_HOST"
+mkdir -p "$VIDEO_DIR_HOST" "$EXTRACTED_AUDIO_DIR_HOST"
 
 # 1. Image bauen (einmalig) - Muss immer noch zuerst ausgeführt werden
 echo "--- 1. FFmpeg Docker Image bauen ---"
@@ -34,7 +34,7 @@ CONTAINER_SCRIPT_PATH="/host_bin/01_extract_audio.sh"
 docker run --rm \
     --platform linux/amd64 \
     -v "$VIDEO_DIR_HOST":/host_video:ro \
-    -v "$AUDIO_DIR_HOST":/host_audio:rw \
+    -v "$EXTRACTED_AUDIO_DIR_HOST":/host_extracted_audio:rw \
     -v "$BIN_DIR_HOST":/host_bin:ro \
     --entrypoint /bin/bash \
     "$FFMPEG_IMAGE_NAME" \

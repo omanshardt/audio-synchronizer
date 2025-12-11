@@ -7,7 +7,7 @@
 # Annahme: Das Verzeichnis /host_audio ist gemountet und enthält die extrahierten Audios.
 
 VIDEO_DIR="/host_video"
-AUDIO_DIR="/host_audio"
+EXTRACTED_AUDIO_DIR="/host_extracted_audio"
 
 echo "Starte Batch-Extraktion aus: $VIDEO_DIR"
 
@@ -26,7 +26,7 @@ for VIDEO_PATH in "$VIDEO_DIR"/*.MP4; do
         BASENAME=$(basename "$VIDEO_PATH")
         FILENAME_NO_EXT="${BASENAME%.*}"
         
-        OUTPUT_PATH="$AUDIO_DIR/$FILENAME_NO_EXT.wav"
+        OUTPUT_PATH="$EXTRACTED_AUDIO_DIR/$FILENAME_NO_EXT.wav"
 
         echo "--------------------------------------------------------"
         echo ">> Bearbeite Video: $BASENAME"
