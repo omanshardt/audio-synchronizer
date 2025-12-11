@@ -1,9 +1,12 @@
-# Wir nutzen ein schlankes Linux-Image mit FFmpeg (oft auf Alpine oder Debian Slim basierend)
-# Hier verwenden wir das offizielle FFmpeg-Image als Basis.
-FROM jrottenberg/ffmpeg:latest
+# Use Ubuntu 22.04 as base for multi-arch support (ARM64/AMD64)
+FROM ubuntu:22.04
 
-# Setze das Arbeitsverzeichnis im Container
+# Avoid interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install ffmpeg
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
-
-# Das ist alles. FFmpeg ist bereits enthalten.
-# Wir müssen keine zusätzlichen Binärdateien kopieren, da das Steuerskript vom Host gemountet wird.

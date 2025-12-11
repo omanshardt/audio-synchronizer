@@ -12,7 +12,7 @@ SYNCED_DIR_HOST="$(pwd)/SyncedAudio"
 mkdir -p "$EXTRACTED_DIR_HOST" "$AUDIO_DIR_HOST" "$SYNCED_DIR_HOST"
 
 echo "--- 1. Building Audio Sync Docker Image ---"
-docker build --platform linux/amd64 -t "$IMAGE_NAME" -f Dockerfile.audio_sync .
+docker build -t "$IMAGE_NAME" -f Dockerfile.audio_sync .
 
 if [ $? -ne 0 ]; then
     echo "Error building Docker image."
@@ -21,7 +21,6 @@ fi
 
 echo "--- 2. Running Audio Correlation ---"
 docker run --rm \
-    --platform linux/amd64 \
     -v "$EXTRACTED_DIR_HOST":/host_extracted_audio:ro \
     -v "$AUDIO_DIR_HOST":/host_audio:ro \
     -v "$SYNCED_DIR_HOST":/host_synced_audio:rw \

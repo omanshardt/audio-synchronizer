@@ -74,7 +74,7 @@ def main():
     synced_dir = sys.argv[3]
     
     # Threshold for correlation match (experimental)
-    CORR_THRESHOLD = 0.5 
+    CORR_THRESHOLD = 0.01
 
     extracted_files = [f for f in os.listdir(extracted_dir) if f.lower().endswith(('.wav', '.mp3', '.aac', '.m4a'))]
     master_files = [f for f in os.listdir(master_dir) if f.lower().endswith(('.wav', '.mp3', '.aac', '.m4a'))]
@@ -95,7 +95,12 @@ def main():
         print(f"Processing: {ext_file}")
         
         # Get duration of the extracted clip (we need this for cutting)
-        duration = librosa.get_duration(filename=ext_path)
+        # Using librosa.get_duration with path argument for newer versions compatibility
+        try:
+            duration = librosa.get_duration(path=ext_path)
+        except TypeError:
+             # Fallback for older librosa versions
+            duration = librosa.get_duration(filename=ext_path)
         
         best_match = None
         best_corr = -1

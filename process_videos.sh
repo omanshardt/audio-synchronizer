@@ -32,7 +32,6 @@ echo "--- 2. Starte Batch-Extraktion im Container ---"
 CONTAINER_SCRIPT_PATH="/host_bin/01_extract_audio.sh"
 
 docker run --rm \
-    --platform linux/amd64 \
     -v "$VIDEO_DIR_HOST":/host_video:ro \
     -v "$EXTRACTED_AUDIO_DIR_HOST":/host_extracted_audio:rw \
     -v "$BIN_DIR_HOST":/host_bin:ro \
