@@ -57,13 +57,13 @@ for VIDEO_PATH in "$VIDEO_DIR"/*.mp4; do
             # Ersetze Audio: Video von Input 0, Audio von Input 1
             ffmpeg -y -i "$VIDEO_PATH" -i "$AUDIO_PATH" \
                 -map 0:v -map 1:a \
-                -c:v copy -c:a copy \
+                -c:v copy -c:a aac \
                 "$OUTPUT_PATH"
         else
             # Füge Audio hinzu: Video von 0, Audio von 0, Audio von 1
             ffmpeg -y -i "$VIDEO_PATH" -i "$AUDIO_PATH" \
                 -map 0:v -map 0:a -map 1:a \
-                -c:v copy -c:a copy \
+                -c:v copy -c:a aac \
                 "$OUTPUT_PATH"
         fi
         
