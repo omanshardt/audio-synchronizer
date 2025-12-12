@@ -33,7 +33,7 @@ echo "Modus: $MODE"
 
 shopt -s nullglob nocaseglob
 
-for VIDEO_PATH in "$VIDEO_DIR"/*.mp4; do
+for VIDEO_PATH in "$VIDEO_DIR"/*.mp4 "$VIDEO_DIR"/*.mov; do
     if [ -f "$VIDEO_PATH" ]; then
         BASENAME=$(basename "$VIDEO_PATH")
         FILENAME_NO_EXT="${BASENAME%.*}"

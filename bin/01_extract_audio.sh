@@ -17,7 +17,8 @@ echo "Starte Batch-Extraktion aus: $VIDEO_DIR"
 shopt -s nullglob
 
 # **WICHTIG:** Sicherstellen, dass die Dateinamen Leerzeichen enthalten können.
-for VIDEO_PATH in "$VIDEO_DIR"/*.MP4; do
+shopt -s nocaseglob
+for VIDEO_PATH in "$VIDEO_DIR"/*.mp4 "$VIDEO_DIR"/*.mov; do
     echo "++++ $VIDEO_PATH"
     # Prüfen, ob eine Datei gefunden wurde (wird durch 'nullglob' sicherer)
     if [ -f "$VIDEO_PATH" ]; then
