@@ -55,7 +55,7 @@ The docker containers are **not** persitant. They are started by the script and 
 In the terminal navigate to the project's root directory and run the following command:
 
 ```bash
-./ synchronize.sh
+./synchronize.sh
 ```
 
 This will replace the audio in the video file with the synchronized audio.
@@ -63,7 +63,7 @@ This will replace the audio in the video file with the synchronized audio.
 If you want to add the synchronized audio as an additional audio track to the video file run the following command: This is recommended and allows to easily compare the original audio and the synchronized external audio recording for example in Final Cut Pro and also to switch back to the original audio if synchronization has failed in some way. When adding the audio to the video file it isplaced as the first track and activated as default track. The original audio form teh video file is placed as the second track.
 
 ```bash
-./ synchronize.sh --add
+./snchronize.sh --add
 ```
 
 After synchronization is done check the Output directory to ensure that the audio was synchronized correctly. If so you can delete the **ExtractedAudio** and **SyncedAudio** directories. You can also delete the original video files if you want to. The video in the new video files has **not** been re-compressed or re-encoded so the same quality as the original video file is preserved. 
@@ -75,3 +75,11 @@ You can execute the single steps individually by executing the following scripts
 - 03_process_merge.sh (with or without the --add flag)
 
 It is recommended to symlink the **Audio** and **Video** directories to the project's root directory, so the files can stay in their original location. It's also possible to symlink **ExtractedAudio**, **SyncedAudio** and **Output** from corresponding directories in your original video project to the root directory.
+
+The script **create_symlinks.sh** is included to demonstrate how I create my symlinks for the working directories. I just hand over the path to the video project's root directory to the script and it creates the symlinks accordingly.
+
+```
+./create_symlinks.sh /path/to/video/project
+```
+
+Your project structure might look different, so you can modify the script to create your symlinks accordingly. Make sure that you have the correct permissions to create symlinks in the project's root directory and that you properly target the sub-directories in your video project within the create_symlinks.sh script.
