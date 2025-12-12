@@ -61,9 +61,10 @@ for VIDEO_PATH in "$VIDEO_DIR"/*.mp4; do
                 "$OUTPUT_PATH"
         else
             # Füge Audio hinzu: Video von 0, Audio von 0, Audio von 1
+            # Original-Audio (Stream 0:a) wird kopiert (Qualitätserhalt), neues Audio (Stream 1:a) wird nach AAC konvertiert
             ffmpeg -y -i "$VIDEO_PATH" -i "$AUDIO_PATH" \
                 -map 0:v -map 0:a -map 1:a \
-                -c:v copy -c:a aac \
+                -c:v copy -c:a:0 copy -c:a:1 aac \
                 "$OUTPUT_PATH"
         fi
         
