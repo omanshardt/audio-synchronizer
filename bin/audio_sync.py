@@ -72,12 +72,12 @@ def main():
     extracted_dir = sys.argv[1]
     master_dir = sys.argv[2]
     synced_dir = sys.argv[3]
-    
+
     # Threshold for correlation match (experimental)
     CORR_THRESHOLD = 0.01
 
-    extracted_files = [f for f in os.listdir(extracted_dir) if f.lower().endswith(('.wav', '.mp3', '.aac', '.m4a'))]
-    master_files = [f for f in os.listdir(master_dir) if f.lower().endswith(('.wav', '.mp3', '.aac', '.m4a'))]
+    extracted_files = [f for f in os.listdir(extracted_dir) if f.lower().endswith(('.aif', '.wav', '.mp3', '.aac', '.m4a'))]
+    master_files = [f for f in os.listdir(master_dir) if f.lower().endswith(('.aif', '.wav', '.mp3', '.aac', '.m4a'))]
 
     if not extracted_files:
         print("No extracted audio files found.")
