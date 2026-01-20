@@ -1,0 +1,15 @@
+[
+    {
+        "origina_video_name": "EXAMPLE.MP4",
+        "ranges": [
+            {
+                "from": "00:00:00",
+                "to": "00:52:00"
+            },
+            {
+                "from": "01:50:00",
+                "to": "-"
+            }
+        ]
+    }
+]

@@ -1,6 +1,7 @@
 # Audio Synchronizer
 
 This project is a collection of scripts and docker containers to synchronize audio from video files with external audio recordings.
+It also provides a function to perform lossless cuts in a batch process. See section **Usage** for more information.
 
 If you have a video file and an audio recording, you can use this project to synchronize the external recorded audio with the audio from the video file. This works with sample acuracy provided that
 
@@ -24,7 +25,7 @@ For now we have two containers:
 - **Container 1** (Dockerfile.ffmpeg): This container is used to extract the audio from the video file and to add the final new audio file to the video file.
 - **Container 2** (Dockerfile.audio_sync): This container is used to synchronize the audio of the video file with the external audio recording via audio correlation using python and librosa and convertig and cutting the audio file via ffmpeg.
 
-As both containers use ffmpeg it would be possible to only have one container but during development it was not clear, that cutting the audio would be done using ffmpeg and not using python. So initially ffmpeg was not foreseen in the second container. This might be changed in a later version of this project.
+As both containers use python and ffmpeg it would be possible to only have one container but during development it was not clear, that cutting the audio would be done using ffmpeg and not using python. So initially ffmpeg was not foreseen in the second container. This might be changed in a later version of this project.
 
 ## Dockerfile
 
@@ -51,6 +52,8 @@ The docker containers are **not** persitant. They are started by the script and 
     - This directory will contain the output video file with the synchronized audio.
 
 ### Usage
+
+#### Synchronization
 
 In the terminal navigate to the project's root directory and run the following command:
 
@@ -83,3 +86,8 @@ The script **create_symlinks.sh** is included to demonstrate how I create my sym
 ```
 
 Your project structure might look different, so you can modify the script to create your symlinks accordingly. Make sure that you have the correct permissions to create symlinks in the project's root directory and that you properly target the sub-directories in your video project within the create_symlinks.sh script.
+
+#### Cutting
+
+The script **00_cut_video.sh** allows to cut video files in a lossless process. For now this process is intended to be executed after the synchronization process - video files are retrieved from the /Output directory which is the directory where the synchronized files are saved. The cuts are defined in the file **video_cuts.json** which is located in the project's root directory but should be stored with each video project and symlinked to the project's root just as the directories **Audio**, **ExtractedAudio**, **Output**, **SyncedAudio**, **Video**
+
