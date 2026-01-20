@@ -1,13 +1,8 @@
-/Video
-/ExtractedAudio
 /Audio
-/ExtractedAudio Kopie
+/ExtractedAudio
 /Output
 /SyncedAudio
+/Video
 /TEST
 /*.fcpbundle
 /.DS_Store
-/Output replace
-/_Testdaten*
-/git-filter-repo
-/Initial Prompt*

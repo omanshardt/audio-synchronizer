@@ -25,6 +25,10 @@ do
         MODE="add"
         shift
         ;;
+        --swap|-s)
+        MODE="swap"
+        shift
+        ;;
     esac
 done
 
@@ -48,6 +52,8 @@ for VIDEO_PATH in "$VIDEO_DIR"/*.mp4 "$VIDEO_DIR"/*.mov; do
         
         if [ "$MODE" == "replace" ]; then
             OUTPUT_PATH="$OUTPUT_DIR/${FILENAME_NO_EXT}-r.${BASENAME##*.}"
+        elif [ "$MODE" == "swap" ]; then
+            OUTPUT_PATH="$OUTPUT_DIR/${FILENAME_NO_EXT}-s.${BASENAME##*.}"
         else
             OUTPUT_PATH="$OUTPUT_DIR/${FILENAME_NO_EXT}-a.${BASENAME##*.}"
         fi
@@ -73,6 +79,21 @@ for VIDEO_PATH in "$VIDEO_DIR"/*.mp4 "$VIDEO_DIR"/*.mov; do
             ffmpeg -y -i "$VIDEO_PATH" -i "$AUDIO_PATH" \
                 -map 0:v -map 1:a \
                 -c:v copy -c:a aac -b:a "$ORIG_BITRATE" \
+                "$OUTPUT_PATH"
+        elif [ "$MODE" == "swap" ]; then
+            # SWAP Modus:
+            # Ersetzt die aktive Audiospur (Track 1 / Stream 0:a) durch das neue Audio (Input 1).
+            # Behält die zweite Audiospur (Track 2 / Stream 0:a:1) bei.
+            
+            # Map:
+            # 0:v -> Video
+            # 1:a -> Neues Audio (als Track 1)
+            # 0:a:1 -> Original Audio Track 2 (als Track 2)
+            
+            ffmpeg -y -i "$VIDEO_PATH" -i "$AUDIO_PATH" \
+                -map 0:v -map 1:a -map 0:a:1 \
+                -c:v copy -c:a:0 aac -b:a:0 "$ORIG_BITRATE" -c:a:1 copy \
+                -disposition:a:0 default -disposition:a:1 0 \
                 "$OUTPUT_PATH"
         else
             # Füge Audio hinzu: Video von 0, Audio von 0, Audio von 1

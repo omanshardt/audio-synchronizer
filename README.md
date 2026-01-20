@@ -91,3 +91,6 @@ Your project structure might look different, so you can modify the script to cre
 
 The script **00_cut_video.sh** allows to cut video files in a lossless process. For now this process is intended to be executed after the synchronization process - video files are retrieved from the /Output directory which is the directory where the synchronized files are saved. The cuts are defined in the file **video_cuts.json** which is located in the project's root directory but should be stored with each video project and symlinked to the project's root just as the directories **Audio**, **ExtractedAudio**, **Output**, **SyncedAudio**, **Video**
 
+#### Replacing Audio
+
+It is possible to replace an existing audio track with a new one. This is useful if you have already added a second (synchronized) track and imported the files into your NLE (at least Final Cut Pro). If you want to perform the audo synchronizartion again (with the **03_process_merge.sh** script) the flag **--swap** can be used to swap the active (the synchronized audio track) with the new (synchronized) track. The final files still have two audio tracks (the original and one synchronized track), so they can still be used in FCP in an already edited project. FCP would otherwise reject the modified video files.
